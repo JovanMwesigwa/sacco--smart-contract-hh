@@ -1,6 +1,6 @@
-# Sample Hardhat Project
+# Sacco smart (Savings) contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This is a self automated user pay out contract that allows users to pay and enter the lottery, collect weekly fees from them, and payout each member respectively after every week..
 
 Try running some of the following tasks:
 
