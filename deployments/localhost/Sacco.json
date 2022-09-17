@@ -1,0 +1,322 @@
+{
+  "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "joinFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "interval",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "NotEnoughEthEntered",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Sacco__NotpaydayTime",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Sacco__PayoutFailed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Payout",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "checkUpkeep",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "upkeepNeeded",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getJoinFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "memberAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getMemberBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "memberAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getMemberNumber",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getMemeberCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "join",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "performUpkeep",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xccac9473b29ac96e766ba82d85fe1ffa804f6ce8eb2e788c36eecb2f16d7da27",
+  "receipt": {
+    "to": null,
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "transactionIndex": 0,
+    "gasUsed": "824677",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x36532c959491357a0e1a578c49b1db616103e35289ca32f1e07d6c7faf2dd05c",
+    "transactionHash": "0xccac9473b29ac96e766ba82d85fe1ffa804f6ce8eb2e788c36eecb2f16d7da27",
+    "logs": [],
+    "blockNumber": 1,
+    "cumulativeGasUsed": "824677",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "20000000000000000",
+    30
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "53384bfc9e124bd03c42a2e3b7c2bbea",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"joinFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interval\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"NotEnoughEthEntered\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Sacco__NotpaydayTime\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Sacco__PayoutFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Payout\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"checkUpkeep\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"upkeepNeeded\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAdmin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getJoinFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"memberAddress\",\"type\":\"address\"}],\"name\":\"getMemberBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"memberAddress\",\"type\":\"address\"}],\"name\":\"getMemberNumber\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getMemeberCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"join\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"performUpkeep\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Sacco.sol\":\"Sacco\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\ninterface KeeperCompatibleInterface {\\n  /**\\n   * @notice method that is simulated by the keepers to see if any work actually\\n   * needs to be performed. This method does does not actually need to be\\n   * executable, and since it is only ever simulated it can consume lots of gas.\\n   * @dev To ensure that it is never called, you may want to add the\\n   * cannotExecute modifier from KeeperBase to your implementation of this\\n   * method.\\n   * @param checkData specified in the upkeep registration so it is always the\\n   * same for a registered upkeep. This can easily be broken down into specific\\n   * arguments using `abi.decode`, so multiple upkeeps can be registered on the\\n   * same contract and easily differentiated by the contract.\\n   * @return upkeepNeeded boolean to indicate whether the keeper should call\\n   * performUpkeep or not.\\n   * @return performData bytes that the keeper should call performUpkeep with, if\\n   * upkeep is needed. If you would like to encode data to decode later, try\\n   * `abi.encode`.\\n   */\\n  function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);\\n\\n  /**\\n   * @notice method that is actually executed by the keepers, via the registry.\\n   * The data returned by the checkUpkeep simulation will be passed into\\n   * this method to actually be executed.\\n   * @dev The input to this method should not be trusted, and the caller of the\\n   * method should not even be restricted to any single registry. Anyone should\\n   * be able call it, and the input should be validated, there is no guarantee\\n   * that the data passed in is the performData returned from checkUpkeep. This\\n   * could happen due to malicious keepers, racing keepers, or simply a state\\n   * change while the performUpkeep transaction is waiting for confirmation.\\n   * Always validate the data passed in.\\n   * @param performData is the data which was passed back from the checkData\\n   * simulation. If it is encoded, it can easily be decoded into other types by\\n   * calling `abi.decode`. This data should not be trusted, and should be\\n   * validated against the contract's current state.\\n   */\\n  function performUpkeep(bytes calldata performData) external;\\n}\\n\",\"keccak256\":\"0xb6577cda6b731b655aebcb6e3c24f8658d3f4c5eda07200622d07d4570af33ea\",\"license\":\"MIT\"},\"contracts/Sacco.sol\":{\"content\":\"// contracts/OurToken.sol\\r\\n// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.7;\\r\\n\\r\\nimport '@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol';\\r\\n\\r\\n// DYNAMIC WORKFLOW ---> // 1. Create a sacco group\\r\\n\\r\\n// GENERAL WORK FLOW\\r\\n// 1. Set join fee\\r\\n// 2. Pay to join\\r\\n// 3. Collect funds every week\\r\\n// 4. Pay out a member every week according to their number\\r\\n\\r\\nerror NotEnoughEthEntered();\\r\\nerror Sacco__NotpaydayTime();\\r\\nerror Sacco__PayoutFailed();\\r\\n\\r\\ncontract Sacco is KeeperCompatibleInterface {\\r\\n    uint256 private immutable i_joinFee;\\r\\n    address private i_admin;\\r\\n    uint256 private s_balances;\\r\\n    uint256 private s_membersCount;\\r\\n    uint256 private immutable i_interval;\\r\\n\\r\\n    address payable[] private s_members;\\r\\n    mapping(address => uint256) private s_memberBalance;\\r\\n    mapping(address => uint256) private s_memberNumber;\\r\\n    uint256 private s_num_gettingPaid;\\r\\n\\r\\n    // Sacco time base state\\r\\n    uint256 private s_lastTimeStamp;\\r\\n\\r\\n    // events\\r\\n    event Payout(address indexed user, uint256 indexed amount);\\r\\n\\r\\n    constructor(uint256 joinFee, uint256 interval) {\\r\\n        i_joinFee = joinFee;\\r\\n        i_admin = msg.sender;\\r\\n        s_balances = 0;\\r\\n        s_lastTimeStamp = block.timestamp;\\r\\n        i_interval = interval;\\r\\n        s_num_gettingPaid = 0;\\r\\n    }\\r\\n\\r\\n    // Main functions\\r\\n    function join() public payable {\\r\\n        if (msg.value < i_joinFee) {\\r\\n            revert NotEnoughEthEntered();\\r\\n        }\\r\\n        s_membersCount++;\\r\\n\\r\\n        s_members.push(payable(msg.sender));\\r\\n\\r\\n        // Update the balance\\r\\n        s_memberBalance[msg.sender] += 0;\\r\\n        s_memberNumber[msg.sender] = s_membersCount;\\r\\n        // Set the balance\\r\\n        s_balances += msg.value;\\r\\n    }\\r\\n\\r\\n    function checkUpkeep(\\r\\n        bytes memory /* checkData */\\r\\n    )\\r\\n        public\\r\\n        view\\r\\n        override\\r\\n        returns (\\r\\n            bool upkeepNeeded,\\r\\n            bytes memory /* performData */\\r\\n        )\\r\\n    {\\r\\n        bool weekPassed = (block.timestamp - s_lastTimeStamp) > i_interval;\\r\\n        bool hasMembers = (s_membersCount > 0);\\r\\n        bool hasBalance = (s_balances > 0);\\r\\n        upkeepNeeded = (weekPassed && hasBalance && hasMembers);\\r\\n        return (upkeepNeeded, '0x0');\\r\\n    }\\r\\n\\r\\n    function performUpkeep(\\r\\n        bytes calldata /* performData */\\r\\n    ) external override {\\r\\n        (bool upkeepNeeded, ) = checkUpkeep(' ');\\r\\n        if (!upkeepNeeded) {\\r\\n            revert Sacco__NotpaydayTime();\\r\\n        }\\r\\n\\r\\n        s_lastTimeStamp = block.timestamp;\\r\\n\\r\\n        if (s_num_gettingPaid > s_membersCount) {\\r\\n            s_num_gettingPaid = 0;\\r\\n        }\\r\\n\\r\\n        // Pay out users\\r\\n        for (uint256 i = 0; i < s_members.length; i++) {\\r\\n            // Get every member number\\r\\n            address memberAddress = s_members[i];\\r\\n            // Get the user getting paid address\\r\\n            address memberGettingPaidAddress = s_members[s_num_gettingPaid];\\r\\n\\r\\n            if (memberAddress == memberGettingPaidAddress) {\\r\\n                // pay the user\\r\\n                (bool success, ) = memberAddress.call{\\r\\n                    value: address(this).balance\\r\\n                }('');\\r\\n\\r\\n                if (!success) {\\r\\n                    revert Sacco__PayoutFailed();\\r\\n                }\\r\\n\\r\\n                // emit Payout(memberAddress, address(this).balance);\\r\\n            }\\r\\n        }\\r\\n\\r\\n        s_num_gettingPaid++;\\r\\n    }\\r\\n\\r\\n    // Pure function\\r\\n    function getMemberBalance(address memberAddress)\\r\\n        public\\r\\n        view\\r\\n        returns (uint256)\\r\\n    {\\r\\n        return s_memberBalance[memberAddress];\\r\\n    }\\r\\n\\r\\n    function getMemberNumber(address memberAddress)\\r\\n        public\\r\\n        view\\r\\n        returns (uint256)\\r\\n    {\\r\\n        return s_memberNumber[memberAddress];\\r\\n    }\\r\\n\\r\\n    function getAdmin() public view returns (address) {\\r\\n        return i_admin;\\r\\n    }\\r\\n\\r\\n    function getMemeberCount() public view returns (uint256) {\\r\\n        return s_membersCount;\\r\\n    }\\r\\n\\r\\n    function getBalance() public view returns (uint256) {\\r\\n        return s_balances;\\r\\n    }\\r\\n\\r\\n    function getJoinFee() public view returns (uint256) {\\r\\n        return i_joinFee;\\r\\n    }\\r\\n}\\r\\n\",\"keccak256\":\"0x0eb8846bd1b3a440329dcce5b374b33e1536299419c4b255ac8fdf9c6f3465e9\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60c060405234801561001057600080fd5b50604051610e55380380610e55833981810160405281019061003291906100db565b8160808181525050336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600181905550426007819055508060a081815250506000600681905550505061011b565b600080fd5b6000819050919050565b6100b8816100a5565b81146100c357600080fd5b50565b6000815190506100d5816100af565b92915050565b600080604083850312156100f2576100f16100a0565b5b6000610100858286016100c6565b9250506020610111858286016100c6565b9150509250929050565b60805160a051610d0e610147600039600061049f01526000818161047301526105640152610d0e6000f3fe6080604052600436106100865760003560e01c80636e04ff0d116100595780636e04ff0d146101355780636e9960c314610173578063b688a3631461019e578063ca55753a146101a8578063fbf11439146101e557610086565b806312065fe01461008b5780634585e33b146100b65780634ef93bac146100df5780635cc8edeb1461010a575b600080fd5b34801561009757600080fd5b506100a0610222565b6040516100ad919061079a565b60405180910390f35b3480156100c257600080fd5b506100dd60048036038101906100d8919061082e565b61022c565b005b3480156100eb57600080fd5b506100f4610465565b604051610101919061079a565b60405180910390f35b34801561011657600080fd5b5061011f61046f565b60405161012c919061079a565b60405180910390f35b34801561014157600080fd5b5061015c600480360381019061015791906109bc565b610497565b60405161016a929190610a9f565b60405180910390f35b34801561017f57600080fd5b50610188610539565b6040516101959190610b10565b60405180910390f35b6101a6610562565b005b3480156101b457600080fd5b506101cf60048036038101906101ca9190610b57565b6106ef565b6040516101dc919061079a565b60405180910390f35b3480156101f157600080fd5b5061020c60048036038101906102079190610b57565b610738565b604051610219919061079a565b60405180910390f35b6000600154905090565b600061026c6040518060400160405280600181526020017f2000000000000000000000000000000000000000000000000000000000000000815250610497565b509050806102a6576040517f36ec0bd700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b4260078190555060025460065411156102c25760006006819055505b60005b600380549050811015610447576000600382815481106102e8576102e7610b84565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050600060036006548154811061032d5761032c610b84565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690508073ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16036104325760008273ffffffffffffffffffffffffffffffffffffffff16476040516103b390610be4565b60006040518083038185875af1925050503d80600081146103f0576040519150601f19603f3d011682016040523d82523d6000602084013e6103f5565b606091505b5050905080610430576040517fbb8cc58b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505b5050808061043f90610c28565b9150506102c5565b506006600081548092919061045b90610c28565b9190505550505050565b6000600254905090565b60007f0000000000000000000000000000000000000000000000000000000000000000905090565b6000606060007f0000000000000000000000000000000000000000000000000000000000000000600754426104cc9190610c70565b1190506000806002541190506000806001541190508280156104eb5750805b80156104f45750815b9450846040518060400160405280600381526020017f307830000000000000000000000000000000000000000000000000000000000081525094509450505050915091565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b7f00000000000000000000000000000000000000000000000000000000000000003410156105bc576040517f3569c8ba00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600260008154809291906105cf90610c28565b91905055506003339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600460003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282546106879190610ca4565b92505081905550600254600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000208190555034600160008282546106e69190610ca4565b92505081905550565b6000600460008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b6000600560008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b6000819050919050565b61079481610781565b82525050565b60006020820190506107af600083018461078b565b92915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b60008083601f8401126107ee576107ed6107c9565b5b8235905067ffffffffffffffff81111561080b5761080a6107ce565b5b602083019150836001820283011115610827576108266107d3565b5b9250929050565b60008060208385031215610845576108446107bf565b5b600083013567ffffffffffffffff811115610863576108626107c4565b5b61086f858286016107d8565b92509250509250929050565b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6108c982610880565b810181811067ffffffffffffffff821117156108e8576108e7610891565b5b80604052505050565b60006108fb6107b5565b905061090782826108c0565b919050565b600067ffffffffffffffff82111561092757610926610891565b5b61093082610880565b9050602081019050919050565b82818337600083830152505050565b600061095f61095a8461090c565b6108f1565b90508281526020810184848401111561097b5761097a61087b565b5b61098684828561093d565b509392505050565b600082601f8301126109a3576109a26107c9565b5b81356109b384826020860161094c565b91505092915050565b6000602082840312156109d2576109d16107bf565b5b600082013567ffffffffffffffff8111156109f0576109ef6107c4565b5b6109fc8482850161098e565b91505092915050565b60008115159050919050565b610a1a81610a05565b82525050565b600081519050919050565b600082825260208201905092915050565b60005b83811015610a5a578082015181840152602081019050610a3f565b60008484015250505050565b6000610a7182610a20565b610a7b8185610a2b565b9350610a8b818560208601610a3c565b610a9481610880565b840191505092915050565b6000604082019050610ab46000830185610a11565b8181036020830152610ac68184610a66565b90509392505050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610afa82610acf565b9050919050565b610b0a81610aef565b82525050565b6000602082019050610b256000830184610b01565b92915050565b610b3481610aef565b8114610b3f57600080fd5b50565b600081359050610b5181610b2b565b92915050565b600060208284031215610b6d57610b6c6107bf565b5b6000610b7b84828501610b42565b91505092915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b600081905092915050565b50565b6000610bce600083610bb3565b9150610bd982610bbe565b600082019050919050565b6000610bef82610bc1565b9150819050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000610c3382610781565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203610c6557610c64610bf9565b5b600182019050919050565b6000610c7b82610781565b9150610c8683610781565b9250828203905081811115610c9e57610c9d610bf9565b5b92915050565b6000610caf82610781565b9150610cba83610781565b9250828201905080821115610cd257610cd1610bf9565b5b9291505056fea26469706673582212202b7dbceefb85817023269911b3c7b67565fbe0ab0aeda176e2ecc99b5cdc892f64736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600436106100865760003560e01c80636e04ff0d116100595780636e04ff0d146101355780636e9960c314610173578063b688a3631461019e578063ca55753a146101a8578063fbf11439146101e557610086565b806312065fe01461008b5780634585e33b146100b65780634ef93bac146100df5780635cc8edeb1461010a575b600080fd5b34801561009757600080fd5b506100a0610222565b6040516100ad919061079a565b60405180910390f35b3480156100c257600080fd5b506100dd60048036038101906100d8919061082e565b61022c565b005b3480156100eb57600080fd5b506100f4610465565b604051610101919061079a565b60405180910390f35b34801561011657600080fd5b5061011f61046f565b60405161012c919061079a565b60405180910390f35b34801561014157600080fd5b5061015c600480360381019061015791906109bc565b610497565b60405161016a929190610a9f565b60405180910390f35b34801561017f57600080fd5b50610188610539565b6040516101959190610b10565b60405180910390f35b6101a6610562565b005b3480156101b457600080fd5b506101cf60048036038101906101ca9190610b57565b6106ef565b6040516101dc919061079a565b60405180910390f35b3480156101f157600080fd5b5061020c60048036038101906102079190610b57565b610738565b604051610219919061079a565b60405180910390f35b6000600154905090565b600061026c6040518060400160405280600181526020017f2000000000000000000000000000000000000000000000000000000000000000815250610497565b509050806102a6576040517f36ec0bd700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b4260078190555060025460065411156102c25760006006819055505b60005b600380549050811015610447576000600382815481106102e8576102e7610b84565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050600060036006548154811061032d5761032c610b84565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690508073ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16036104325760008273ffffffffffffffffffffffffffffffffffffffff16476040516103b390610be4565b60006040518083038185875af1925050503d80600081146103f0576040519150601f19603f3d011682016040523d82523d6000602084013e6103f5565b606091505b5050905080610430576040517fbb8cc58b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505b5050808061043f90610c28565b9150506102c5565b506006600081548092919061045b90610c28565b9190505550505050565b6000600254905090565b60007f0000000000000000000000000000000000000000000000000000000000000000905090565b6000606060007f0000000000000000000000000000000000000000000000000000000000000000600754426104cc9190610c70565b1190506000806002541190506000806001541190508280156104eb5750805b80156104f45750815b9450846040518060400160405280600381526020017f307830000000000000000000000000000000000000000000000000000000000081525094509450505050915091565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b7f00000000000000000000000000000000000000000000000000000000000000003410156105bc576040517f3569c8ba00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600260008154809291906105cf90610c28565b91905055506003339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000600460003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282546106879190610ca4565b92505081905550600254600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000208190555034600160008282546106e69190610ca4565b92505081905550565b6000600460008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b6000600560008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b6000819050919050565b61079481610781565b82525050565b60006020820190506107af600083018461078b565b92915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b60008083601f8401126107ee576107ed6107c9565b5b8235905067ffffffffffffffff81111561080b5761080a6107ce565b5b602083019150836001820283011115610827576108266107d3565b5b9250929050565b60008060208385031215610845576108446107bf565b5b600083013567ffffffffffffffff811115610863576108626107c4565b5b61086f858286016107d8565b92509250509250929050565b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6108c982610880565b810181811067ffffffffffffffff821117156108e8576108e7610891565b5b80604052505050565b60006108fb6107b5565b905061090782826108c0565b919050565b600067ffffffffffffffff82111561092757610926610891565b5b61093082610880565b9050602081019050919050565b82818337600083830152505050565b600061095f61095a8461090c565b6108f1565b90508281526020810184848401111561097b5761097a61087b565b5b61098684828561093d565b509392505050565b600082601f8301126109a3576109a26107c9565b5b81356109b384826020860161094c565b91505092915050565b6000602082840312156109d2576109d16107bf565b5b600082013567ffffffffffffffff8111156109f0576109ef6107c4565b5b6109fc8482850161098e565b91505092915050565b60008115159050919050565b610a1a81610a05565b82525050565b600081519050919050565b600082825260208201905092915050565b60005b83811015610a5a578082015181840152602081019050610a3f565b60008484015250505050565b6000610a7182610a20565b610a7b8185610a2b565b9350610a8b818560208601610a3c565b610a9481610880565b840191505092915050565b6000604082019050610ab46000830185610a11565b8181036020830152610ac68184610a66565b90509392505050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610afa82610acf565b9050919050565b610b0a81610aef565b82525050565b6000602082019050610b256000830184610b01565b92915050565b610b3481610aef565b8114610b3f57600080fd5b50565b600081359050610b5181610b2b565b92915050565b600060208284031215610b6d57610b6c6107bf565b5b6000610b7b84828501610b42565b91505092915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b600081905092915050565b50565b6000610bce600083610bb3565b9150610bd982610bbe565b600082019050919050565b6000610bef82610bc1565b9150819050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000610c3382610781565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203610c6557610c64610bf9565b5b600182019050919050565b6000610c7b82610781565b9150610c8683610781565b9250828203905081811115610c9e57610c9d610bf9565b5b92915050565b6000610caf82610781565b9150610cba83610781565b9250828201905080821115610cd257610cd1610bf9565b5b9291505056fea26469706673582212202b7dbceefb85817023269911b3c7b67565fbe0ab0aeda176e2ecc99b5cdc892f64736f6c63430008110033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 33,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "i_admin",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 35,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_balances",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 37,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_membersCount",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 42,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_members",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_array(t_address_payable)dyn_storage"
+      },
+      {
+        "astId": 46,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_memberBalance",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 50,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_memberNumber",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 52,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_num_gettingPaid",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 54,
+        "contract": "contracts/Sacco.sol:Sacco",
+        "label": "s_lastTimeStamp",
+        "offset": 0,
+        "slot": "7",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_address_payable": {
+        "encoding": "inplace",
+        "label": "address payable",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address_payable)dyn_storage": {
+        "base": "t_address_payable",
+        "encoding": "dynamic_array",
+        "label": "address payable[]",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

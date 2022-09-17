@@ -1,0 +1,38 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Sacco.sol": {
+      "content": "// contracts/OurToken.sol\r\n// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.7;\r\n\r\nimport '@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol';\r\n\r\n// DYNAMIC WORKFLOW ---> // 1. Create a sacco group\r\n\r\n// GENERAL WORK FLOW\r\n// 1. Set join fee\r\n// 2. Pay to join\r\n// 3. Collect funds every week\r\n// 4. Pay out a member every week according to their number\r\n\r\nerror NotEnoughEthEntered();\r\nerror Sacco__NotpaydayTime();\r\nerror Sacco__PayoutFailed();\r\n\r\ncontract Sacco is KeeperCompatibleInterface {\r\n    uint256 private immutable i_joinFee;\r\n    address private i_admin;\r\n    uint256 private s_balances;\r\n    uint256 private s_membersCount;\r\n    uint256 private immutable i_interval;\r\n\r\n    address payable[] private s_members;\r\n    mapping(address => uint256) private s_memberBalance;\r\n    mapping(address => uint256) private s_memberNumber;\r\n    uint256 private s_num_gettingPaid;\r\n\r\n    // Sacco time base state\r\n    uint256 private s_lastTimeStamp;\r\n\r\n    // events\r\n    event Payout(address indexed user, uint256 indexed amount);\r\n\r\n    constructor(uint256 joinFee, uint256 interval) {\r\n        i_joinFee = joinFee;\r\n        i_admin = msg.sender;\r\n        s_balances = 0;\r\n        s_lastTimeStamp = block.timestamp;\r\n        i_interval = interval;\r\n        s_num_gettingPaid = 0;\r\n    }\r\n\r\n    // Main functions\r\n    function join() public payable {\r\n        if (msg.value < i_joinFee) {\r\n            revert NotEnoughEthEntered();\r\n        }\r\n        s_membersCount++;\r\n\r\n        s_members.push(payable(msg.sender));\r\n\r\n        // Update the balance\r\n        s_memberBalance[msg.sender] += 0;\r\n        s_memberNumber[msg.sender] = s_membersCount;\r\n        // Set the balance\r\n        s_balances += msg.value;\r\n    }\r\n\r\n    function checkUpkeep(\r\n        bytes memory /* checkData */\r\n    )\r\n        public\r\n        view\r\n        override\r\n        returns (\r\n            bool upkeepNeeded,\r\n            bytes memory /* performData */\r\n        )\r\n    {\r\n        bool weekPassed = (block.timestamp - s_lastTimeStamp) > i_interval;\r\n        bool hasMembers = (s_membersCount > 0);\r\n        bool hasBalance = (s_balances > 0);\r\n        upkeepNeeded = (weekPassed && hasBalance && hasMembers);\r\n        return (upkeepNeeded, '0x0');\r\n    }\r\n\r\n    function performUpkeep(\r\n        bytes calldata /* performData */\r\n    ) external override {\r\n        (bool upkeepNeeded, ) = checkUpkeep(' ');\r\n        if (!upkeepNeeded) {\r\n            revert Sacco__NotpaydayTime();\r\n        }\r\n\r\n        s_lastTimeStamp = block.timestamp;\r\n\r\n        if (s_num_gettingPaid > s_membersCount) {\r\n            s_num_gettingPaid = 0;\r\n        }\r\n\r\n        // Pay out users\r\n        for (uint256 i = 0; i < s_members.length; i++) {\r\n            // Get every member number\r\n            address memberAddress = s_members[i];\r\n            // Get the user getting paid address\r\n            address memberGettingPaidAddress = s_members[s_num_gettingPaid];\r\n\r\n            if (memberAddress == memberGettingPaidAddress) {\r\n                // pay the user\r\n                (bool success, ) = memberAddress.call{\r\n                    value: address(this).balance\r\n                }('');\r\n\r\n                if (!success) {\r\n                    revert Sacco__PayoutFailed();\r\n                }\r\n\r\n                // emit Payout(memberAddress, address(this).balance);\r\n            }\r\n        }\r\n\r\n        s_num_gettingPaid++;\r\n    }\r\n\r\n    // Pure function\r\n    function getMemberBalance(address memberAddress)\r\n        public\r\n        view\r\n        returns (uint256)\r\n    {\r\n        return s_memberBalance[memberAddress];\r\n    }\r\n\r\n    function getMemberNumber(address memberAddress)\r\n        public\r\n        view\r\n        returns (uint256)\r\n    {\r\n        return s_memberNumber[memberAddress];\r\n    }\r\n\r\n    function getAdmin() public view returns (address) {\r\n        return i_admin;\r\n    }\r\n\r\n    function getMemeberCount() public view returns (uint256) {\r\n        return s_membersCount;\r\n    }\r\n\r\n    function getBalance() public view returns (uint256) {\r\n        return s_balances;\r\n    }\r\n\r\n    function getJoinFee() public view returns (uint256) {\r\n        return i_joinFee;\r\n    }\r\n}\r\n"
+    },
+    "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface KeeperCompatibleInterface {\n  /**\n   * @notice method that is simulated by the keepers to see if any work actually\n   * needs to be performed. This method does does not actually need to be\n   * executable, and since it is only ever simulated it can consume lots of gas.\n   * @dev To ensure that it is never called, you may want to add the\n   * cannotExecute modifier from KeeperBase to your implementation of this\n   * method.\n   * @param checkData specified in the upkeep registration so it is always the\n   * same for a registered upkeep. This can easily be broken down into specific\n   * arguments using `abi.decode`, so multiple upkeeps can be registered on the\n   * same contract and easily differentiated by the contract.\n   * @return upkeepNeeded boolean to indicate whether the keeper should call\n   * performUpkeep or not.\n   * @return performData bytes that the keeper should call performUpkeep with, if\n   * upkeep is needed. If you would like to encode data to decode later, try\n   * `abi.encode`.\n   */\n  function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);\n\n  /**\n   * @notice method that is actually executed by the keepers, via the registry.\n   * The data returned by the checkUpkeep simulation will be passed into\n   * this method to actually be executed.\n   * @dev The input to this method should not be trusted, and the caller of the\n   * method should not even be restricted to any single registry. Anyone should\n   * be able call it, and the input should be validated, there is no guarantee\n   * that the data passed in is the performData returned from checkUpkeep. This\n   * could happen due to malicious keepers, racing keepers, or simply a state\n   * change while the performUpkeep transaction is waiting for confirmation.\n   * Always validate the data passed in.\n   * @param performData is the data which was passed back from the checkData\n   * simulation. If it is encoded, it can easily be decoded into other types by\n   * calling `abi.decode`. This data should not be trusted, and should be\n   * validated against the contract's current state.\n   */\n  function performUpkeep(bytes calldata performData) external;\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
