@@ -33,6 +33,7 @@ contract Sacco is KeeperCompatibleInterface {
 
     // events
     event Payout(address indexed user, uint256 indexed amount);
+    event NewPlayerEntered(address indexed player);
 
     constructor(uint256 joinFee, uint256 interval) {
         i_joinFee = joinFee;
@@ -57,6 +58,8 @@ contract Sacco is KeeperCompatibleInterface {
         s_memberNumber[msg.sender] = s_membersCount;
         // Set the balance
         s_balances += msg.value;
+
+        emit NewPlayerEntered(msg.sender);
     }
 
     function checkUpkeep(
