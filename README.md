@@ -4,7 +4,7 @@ This is a self automated user pay out contract that allows users to pay and ente
 The contract will then collect weekly fees from each user, and payout each member respectively after every week..
 
 ### The smart contract
-Using Solidity version 0.8.7 using ```@chainlink/KeeperCompatible``` to trigger the funds distribution after 30seconds
+Using Solidity version 0.8.7 using ```@chainlink/contracts/KeeperCompatible``` to trigger the funds distribution after 30seconds
 
 ##### Note: Chainlink has since the updated the KeeperCompatible to AutomationCompatible although no breaking changes found
 
