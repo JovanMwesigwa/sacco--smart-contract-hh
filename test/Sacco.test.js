@@ -1,9 +1,15 @@
-const { getNamedAccounts, deployments, ethers } = require('hardhat')
+const { getNamedAccounts, deployments, ethers, network } = require('hardhat')
 const { expect, assert } = require('chai')
 const { JOIN_FEE } = require('../helper-hardhat-config')
 
 describe('Sacco Contract tests', function () {
-  let saccoContract, saccoAddress, deployer, signers, signer
+  let saccoContract,
+    saccoAddress,
+    deployer,
+    signers,
+    signer,
+    contract,
+    currentSaccoInterval
 
   beforeEach(async function () {
     // Deploy  the contracts here...
@@ -17,8 +23,11 @@ describe('Sacco Contract tests', function () {
     signers = await ethers.getSigners()
     signer = signers[0]
 
-    const contract = await ethers.getContract('Sacco', deployer)
+    contract = await ethers.getContract('Sacco', deployer)
+    saccoAddress = contract.address
     saccoContract = await contract.connect(signer)
+
+    currentSaccoInterval = await saccoContract.getInterval()
   })
 
   it('Should deploy successfully', async () => {
@@ -89,4 +98,82 @@ describe('Sacco Contract tests', function () {
       assert.equal(joinedMember.toString(), signer.address)
     })
   })
+
+  describe('CheckupKeep', () => {
+    it('Should return false if no user has entered the contract', async () => {
+      // Increase the current (EVM) blockchain time
+      await network.provider.send('evm_increaseTime', [
+        currentSaccoInterval.toNumber() + 1,
+      ])
+      // Manually mine the next blockx
+      await network.provider.request({ method: 'evm_mine', params: [] })
+      const { upkeepNeeded } = await saccoContract.callStatic.checkUpkeep('0x')
+      assert(!upkeepNeeded)
+    })
+
+    it('Should return false if the contract has no balance', async () => {
+      // Increase the current (EVM) blockchain time
+      await network.provider.send('evm_increaseTime', [
+        currentSaccoInterval.toNumber() + 1,
+      ])
+      // Manually mine the next blockx
+      await network.provider.request({ method: 'evm_mine', params: [] })
+      const { upkeepNeeded } = await saccoContract.callStatic.checkUpkeep('0x')
+      assert(!upkeepNeeded)
+    })
+
+    it('Should return false when the payout time is not yet passed', async () => {
+      // Join a user
+      await saccoContract.join({ value: JOIN_FEE })
+      // Increase EVM time
+      await network.provider.send('evm_increaseTime', [
+        currentSaccoInterval.toNumber() - 5,
+      ])
+      // Mine
+      await network.provider.request({ method: 'evm_mine', params: [] })
+      const { upkeepNeeded } = await saccoContract.callStatic.checkUpkeep('0x')
+      assert(!upkeepNeeded)
+    })
+  })
+
+  describe('PerformUpKeep', () => {
+    let connectedContract, interval
+
+    beforeEach(async () => {
+      // Add users to the contract
+      signers.forEach(async (account) => {
+        connectedContract = await contract.connect(account)
+        await connectedContract.join({ value: JOIN_FEE })
+      })
+      await network.provider.send('evm_increaseTime', [
+        currentSaccoInterval.toNumber() + 1,
+      ])
+      await network.provider.request({ method: 'evm_mine', params: [] })
+    })
+  })
+  /*
+  describe('Distribution', () => {
+    let connectContract, interval
+
+    beforeEach(async () => {
+      // Add users to the contract
+      signers.forEach(async (account) => {
+        connectContract = await contract.connect(account)
+        await connectContract.join({ value: account })
+      })
+
+      // interval = await connectContract.getInterval()
+    })
+
+    it('Should distribute the funds to the first user', async () => {
+      // Increase the evm time and mine
+      await network.provider.send('evm_increaseTime', [
+        currentSaccoInterval.toNumber() + 1,
+      ])
+      await network.provider.request({ method: 'evm_mine', params: [] })
+      const tx = await connectContract.performUpkeep('0x')
+      assert(tx)
+    })
+  })
+  */
 })

@@ -3,7 +3,7 @@
 pragma solidity ^0.8.7;
 
 import '@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol';
-
+import 'hardhat/console.sol';
 // DYNAMIC WORKFLOW ---> // 1. Create a sacco group
 
 // GENERAL WORK FLOW
@@ -32,7 +32,7 @@ contract Sacco is KeeperCompatibleInterface {
     uint256 private s_lastTimeStamp;
 
     // events
-    event Payout(address indexed user, uint256 indexed amount);
+    event MemberPaidOut(address indexed user, uint256 indexed amount);
     event NewPlayerEntered(address indexed player);
 
     constructor(uint256 joinFee, uint256 interval) {
@@ -73,9 +73,9 @@ contract Sacco is KeeperCompatibleInterface {
             bytes memory /* performData */
         )
     {
-        bool weekPassed = (block.timestamp - s_lastTimeStamp) > i_interval;
         bool hasMembers = (s_membersCount > 0);
         bool hasBalance = (s_balances > 0);
+        bool weekPassed = (block.timestamp - s_lastTimeStamp) > i_interval;
         upkeepNeeded = (weekPassed && hasBalance && hasMembers);
         return (upkeepNeeded, '0x0');
     }
@@ -94,16 +94,21 @@ contract Sacco is KeeperCompatibleInterface {
             s_num_gettingPaid = 0;
         }
 
+        uint256 currentContractBal_ = address(this).balance;
+
         // Pay out users
         for (uint256 i = 0; i < s_members.length; i++) {
             // Get every member number
-            address memberAddress = s_members[i];
+            address payable memberAddress = s_members[i];
             // Get the user getting paid address
-            address memberGettingPaidAddress = s_members[s_num_gettingPaid];
+            address payable memberGettingPaidAddress = s_members[
+                s_num_gettingPaid
+            ];
 
+            // console.log(memberGettingPaidAddress);
             if (memberAddress == memberGettingPaidAddress) {
                 // pay the user
-                (bool success, ) = memberAddress.call{
+                (bool success, ) = memberGettingPaidAddress.call{
                     value: address(this).balance
                 }('');
 
@@ -111,7 +116,16 @@ contract Sacco is KeeperCompatibleInterface {
                     revert Sacco__PayoutFailed();
                 }
 
-                // emit Payout(memberAddress, address(this).balance);
+                // Update the member balance in the contract
+                s_memberBalance[
+                    memberGettingPaidAddress
+                ] += currentContractBal_;
+
+                // Update the  balance in the contract
+                uint256 contractBal_ = address(this).balance;
+                s_balances = contractBal_;
+
+                emit MemberPaidOut(memberAddress, currentContractBal_);
             }
         }
 
@@ -161,5 +175,13 @@ contract Sacco is KeeperCompatibleInterface {
 
     function getJoinFee() public view returns (uint256) {
         return i_joinFee;
+    }
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
+    }
+
+    function getLastTimestamp() public view returns (uint256) {
+        return s_lastTimeStamp;
     }
 }
