@@ -15,6 +15,7 @@ import 'hardhat/console.sol';
 error NotEnoughEthEntered();
 error Sacco__NotpaydayTime();
 error Sacco__PayoutFailed();
+error Sacco__UpkeepNotNeeded();
 
 contract Sacco is KeeperCompatibleInterface {
     uint256 private immutable i_joinFee;
@@ -60,6 +61,59 @@ contract Sacco is KeeperCompatibleInterface {
         s_balances += msg.value;
 
         emit NewPlayerEntered(msg.sender);
+    }
+
+    function payoutMembers() external {
+        bool hasMembers = (s_membersCount > 0);
+        bool hasBalance = (s_balances > 0);
+        bool upkeepNeeded = (hasBalance && hasMembers);
+
+        if (!upkeepNeeded) {
+            revert Sacco__UpkeepNotNeeded();
+        }
+
+        s_lastTimeStamp = block.timestamp;
+
+        if (s_num_gettingPaid > s_membersCount) {
+            s_num_gettingPaid = 0;
+        }
+
+        uint256 currentContractBal_ = address(this).balance;
+
+        // Pay out users
+        for (uint256 i = 0; i < s_members.length; i++) {
+            // Get every member number
+            address payable memberAddress = s_members[i];
+            // Get the user getting paid address
+            address payable memberGettingPaidAddress = s_members[
+                s_num_gettingPaid
+            ];
+
+            // console.log(memberGettingPaidAddress);
+            if (memberAddress == memberGettingPaidAddress) {
+                // pay the user
+                (bool success, ) = memberGettingPaidAddress.call{
+                    value: address(this).balance
+                }('');
+
+                if (!success) {
+                    revert Sacco__PayoutFailed();
+                }
+
+                // Update the member balance in the contract
+                s_memberBalance[
+                    memberGettingPaidAddress
+                ] += currentContractBal_;
+
+                // Update the  balance in the contract
+                uint256 contractBal_ = address(this).balance;
+                s_balances = contractBal_;
+
+                emit MemberPaidOut(memberAddress, currentContractBal_);
+            }
+        }
+
+        s_num_gettingPaid++;
     }
 
     function checkUpkeep(

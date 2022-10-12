@@ -99,6 +99,26 @@ describe('Sacco Contract tests', function () {
     })
   })
 
+  describe('Payoutmembers', () => {
+    it('Should have more members in the contract', async () => {
+      let connectedContract
+
+      const accounts = await ethers.getSigners()
+
+      for (i = 1; i <= accounts.length; i++) {
+        connectedContract = await contract.connect(accounts[i])
+        await connectedContract.join({ value: JOIN_FEE })
+      }
+
+      // await saccoContract.join({ value: JOIN_FEE })
+
+      const members = await connectedContract.getMemberCount()
+      // assert.equal(members.toString(), signers.length)
+      console.log(members.toString())
+    })
+  })
+
+  /*
   describe('CheckupKeep', () => {
     it('Should return false if no user has entered the contract', async () => {
       // Increase the current (EVM) blockchain time
@@ -151,6 +171,7 @@ describe('Sacco Contract tests', function () {
       await network.provider.request({ method: 'evm_mine', params: [] })
     })
   })
+  */
   /*
   describe('Distribution', () => {
     let connectContract, interval

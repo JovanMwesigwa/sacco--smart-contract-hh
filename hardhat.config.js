@@ -9,7 +9,13 @@ const MAINNET_RPC_URL =
 const GOERLI_RPC_URL =
   process.env.GOERLI_RPC_URL ||
   'https://eth-goerli.alchemyapi.io/v2/your-api-key'
+const MUMBAI_RPC_URL =
+  process.env.MUMBAI_RPC_URL ||
+  'https://eth-goerli.alchemyapi.io/v2/your-api-key'
 const PRIVATE_KEY = process.env.PRIVATE_KEY
+
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -26,6 +32,12 @@ module.exports = {
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
       saveDeployments: true,
       chainId: 5,
+    },
+    mumbai: {
+      url: MUMBAI_RPC_URL,
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+      saveDeployments: true,
+      chainId: 80001,
     },
     mainnet: {
       url: MAINNET_RPC_URL,
@@ -56,11 +68,21 @@ module.exports = {
       },
     ],
   },
+  etherscan: {
+    // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
+    apiKey: {
+      goerli: ETHERSCAN_API_KEY,
+      polygonMumbai: POLYGONSCAN_API_KEY,
+    },
+  },
   gasReporter: {
     enabled: false,
     currency: 'USD',
     outputFile: 'gas-report.txt',
     noColors: true,
     // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+  },
+  paths: {
+    artifacts: './client/artifacts',
   },
 }
