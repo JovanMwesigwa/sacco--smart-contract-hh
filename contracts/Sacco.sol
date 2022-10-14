@@ -16,6 +16,11 @@ error NotEnoughEthEntered();
 error Sacco__NotpaydayTime();
 error Sacco__PayoutFailed();
 error Sacco__UpkeepNotNeeded();
+error Sacco__NotPermitted();
+error Sacco__WrongFeeAmount();
+error Sacco__MemberHasNotContributed();
+error Sacco__AlreadyContributed();
+error Sacco__RequestNotPermitted();
 
 contract Sacco is KeeperCompatibleInterface {
     uint256 private immutable i_joinFee;
@@ -35,14 +40,35 @@ contract Sacco is KeeperCompatibleInterface {
     // events
     event MemberPaidOut(address indexed user, uint256 indexed amount);
     event NewPlayerEntered(address indexed player);
+    event Deposit(address indexed member, uint256 indexed amount);
 
-    constructor(uint256 joinFee, uint256 interval) {
+    // Keepers verified addresses
+    address private immutable i_KEEPERS_REGISTERY;
+
+    // struct
+    struct Member {
+        uint256 memberNumber;
+        address memberAddress;
+        uint256 memberBalance;
+        bool getsPaidNext;
+        bool hasContributed;
+    }
+
+    Member[] private s_memberList;
+    mapping(address => Member) private s_membersInfo;
+
+    constructor(
+        uint256 joinFee,
+        uint256 interval,
+        address keepersRegistryAddress
+    ) {
         i_joinFee = joinFee;
         i_admin = msg.sender;
         s_balances = 0;
         s_lastTimeStamp = block.timestamp;
         i_interval = interval;
-        s_num_gettingPaid = 0;
+        s_num_gettingPaid = 1;
+        i_KEEPERS_REGISTERY = keepersRegistryAddress;
     }
 
     // Main functions
@@ -60,10 +86,32 @@ contract Sacco is KeeperCompatibleInterface {
         // Set the balance
         s_balances += msg.value;
 
+        s_memberList.push(
+            Member(
+                s_membersCount,
+                msg.sender,
+                s_memberBalance[msg.sender],
+                false,
+                true
+            )
+        );
+
+        s_membersInfo[msg.sender] = Member(
+            s_membersCount,
+            msg.sender,
+            s_memberBalance[msg.sender],
+            false,
+            true
+        );
+
         emit NewPlayerEntered(msg.sender);
     }
 
     function payoutMembers() external {
+        if (msg.sender != i_KEEPERS_REGISTERY) {
+            revert Sacco__RequestNotPermitted();
+        }
+
         bool hasMembers = (s_membersCount > 0);
         bool hasBalance = (s_balances > 0);
         bool upkeepNeeded = (hasBalance && hasMembers);
@@ -75,7 +123,7 @@ contract Sacco is KeeperCompatibleInterface {
         s_lastTimeStamp = block.timestamp;
 
         if (s_num_gettingPaid > s_membersCount) {
-            s_num_gettingPaid = 0;
+            s_num_gettingPaid = 1;
         }
 
         uint256 currentContractBal_ = address(this).balance;
@@ -86,34 +134,82 @@ contract Sacco is KeeperCompatibleInterface {
             address payable memberAddress = s_members[i];
             // Get the user getting paid address
             address payable memberGettingPaidAddress = s_members[
-                s_num_gettingPaid
+                s_num_gettingPaid - 1
             ];
 
-            // console.log(memberGettingPaidAddress);
             if (memberAddress == memberGettingPaidAddress) {
-                // pay the user
-                (bool success, ) = memberGettingPaidAddress.call{
-                    value: address(this).balance
-                }('');
+                // Verify to see if the member has contributed lately
 
-                if (!success) {
-                    revert Sacco__PayoutFailed();
+                bool contributed = s_membersInfo[memberAddress].hasContributed;
+
+                // If the user has not contirbuted recently we skip him from getting the payout
+                if (contributed) {
+                    // revert Sacco__MemberHasNotContributed();
+
+                    // pay the user
+                    (bool success, ) = memberGettingPaidAddress.call{
+                        value: address(this).balance
+                    }('');
+
+                    if (!success) {
+                        revert Sacco__PayoutFailed();
+                    }
+
+                    // Update the member balance in the contract
+                    s_memberBalance[
+                        memberGettingPaidAddress
+                    ] += currentContractBal_;
+
+                    s_membersInfo[msg.sender]
+                        .memberBalance = currentContractBal_;
+
+                    // Update the  balance in the contract
+                    uint256 contractBal_ = address(this).balance;
+                    s_balances = contractBal_;
+
+                    emit MemberPaidOut(memberAddress, currentContractBal_);
                 }
-
-                // Update the member balance in the contract
-                s_memberBalance[
-                    memberGettingPaidAddress
-                ] += currentContractBal_;
-
-                // Update the  balance in the contract
-                uint256 contractBal_ = address(this).balance;
-                s_balances = contractBal_;
-
-                emit MemberPaidOut(memberAddress, currentContractBal_);
             }
+
+            // reset all members contributed status to false after payout
+            s_membersInfo[memberAddress].hasContributed = false;
         }
 
         s_num_gettingPaid++;
+
+        if (s_num_gettingPaid > s_membersCount) {
+            s_num_gettingPaid = 1;
+        }
+    }
+
+    receive() external payable {
+        if (msg.value != i_joinFee) {
+            revert Sacco__WrongFeeAmount();
+        }
+
+        bool contributed = s_membersInfo[msg.sender].hasContributed;
+
+        if (contributed) {
+            revert Sacco__AlreadyContributed();
+        }
+
+        s_membersInfo[msg.sender].hasContributed = true;
+        s_balances += msg.value;
+
+        emit Deposit(msg.sender, msg.value);
+    }
+
+    fallback() external payable {}
+
+    function clearSacco() public {
+        if (msg.sender != i_admin) {
+            revert Sacco__NotPermitted();
+        }
+
+        s_membersCount = 0;
+        delete s_members;
+        delete s_memberList;
+        s_num_gettingPaid = 1;
     }
 
     function checkUpkeep(
@@ -237,5 +333,17 @@ contract Sacco is KeeperCompatibleInterface {
 
     function getLastTimestamp() public view returns (uint256) {
         return s_lastTimeStamp;
+    }
+
+    function getMembersList() public view returns (Member[] memory) {
+        return s_memberList;
+    }
+
+    function getMembersDetails(address memberAddress_)
+        public
+        view
+        returns (Member memory)
+    {
+        return s_membersInfo[memberAddress_];
     }
 }

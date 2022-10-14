@@ -97,24 +97,50 @@ describe('Sacco Contract tests', function () {
       const joinedMember = await saccoContract.getMemberIndex(0)
       assert.equal(joinedMember.toString(), signer.address)
     })
+
+    it('Should add the user to the members array list', async () => {
+      await saccoContract.join({ value: JOIN_FEE })
+
+      const memberArray = await saccoContract.getMembersList()
+      assert(memberArray)
+    })
+
+    it('Should set the contributed status to true', async () => {
+      await saccoContract.join({ value: JOIN_FEE })
+
+      const memberDetails = await saccoContract.getMembersDetails(
+        signer.address
+      )
+      // console.log(memberDetails)
+      // assert(memberDetails.hasContributed)
+      expect(memberDetails.hasContributed).to.be.true
+    })
   })
 
   describe('Payoutmembers', () => {
     it('Should have more members in the contract', async () => {
-      let connectedContract
+      await saccoContract.join({ value: JOIN_FEE })
 
-      const accounts = await ethers.getSigners()
-
-      for (i = 1; i <= accounts.length; i++) {
-        connectedContract = await contract.connect(accounts[i])
-        await connectedContract.join({ value: JOIN_FEE })
-      }
+      await saccoContract.payoutMembers()
 
       // await saccoContract.join({ value: JOIN_FEE })
 
-      const members = await connectedContract.getMemberCount()
+      const members = await saccoContract.getMemberCount()
       // assert.equal(members.toString(), signers.length)
-      console.log(members.toString())
+    })
+
+    it('Should set the member contribution to false', async () => {
+      await saccoContract.join({ value: JOIN_FEE })
+
+      await saccoContract.payoutMembers()
+
+      // await saccoContract.join({ value: JOIN_FEE })
+
+      const memberContributionStatus = await saccoContract.getMembersDetails(
+        signer.address
+      )
+      // assert.equal(members.toString(), signers.length)
+      expect(memberContributionStatus.hasContributed).to.be.false
     })
   })
 

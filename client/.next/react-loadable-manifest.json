@@ -8,13 +8,13 @@
   "..\\node_modules\\@web3auth\\openlogin-adapter\\dist\\openloginAdapter.esm.js -> @web3auth/ethereum-provider": {
     "id": "..\\node_modules\\@web3auth\\openlogin-adapter\\dist\\openloginAdapter.esm.js -> @web3auth/ethereum-provider",
     "files": [
-      "static/chunks/node_modules_web3auth_ethereum-provider_dist_ethereumProvider_esm_js.js"
+      "static/chunks/node_modules_web3auth_openlogin-adapter_node_modules_web3auth_ethereum-provider_dist_ethereum-82dcd9.js"
     ]
   },
   "..\\node_modules\\@web3auth\\openlogin-adapter\\dist\\openloginAdapter.esm.js -> @web3auth/solana-provider": {
     "id": "..\\node_modules\\@web3auth\\openlogin-adapter\\dist\\openloginAdapter.esm.js -> @web3auth/solana-provider",
     "files": [
-      "static/chunks/node_modules_web3auth_solana-provider_dist_solanaProvider_esm_js.js"
+      "static/chunks/node_modules_web3auth_openlogin-adapter_node_modules_web3auth_solana-provider_dist_solanaProv-32667c.js"
     ]
   },
   "..\\node_modules\\@web3auth\\web3auth\\dist\\web3auth.esm.js -> @web3auth/metamask-adapter": {

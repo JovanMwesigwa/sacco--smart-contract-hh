@@ -1,13 +1,17 @@
 const { network } = require('hardhat')
-const { JOIN_FEE } = require('../helper-hardhat-config')
+const { JOIN_FEE, networkConfig } = require('../helper-hardhat-config')
 const { verify } = require('../utils/verify')
-const INTERVAL = 30
+const INTERVAL = 120
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
   const chainId = network.config.chainId
-  const args = [JOIN_FEE, INTERVAL]
+
+  const upkeepRegisteryAddress =
+    networkConfig[chainId]['upkeepRegisteryAddress']
+
+  const args = [JOIN_FEE, INTERVAL, upkeepRegisteryAddress]
 
   // Deploy the sacco contract on both chainn
   if (chainId === 31337) {
@@ -23,7 +27,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
       from: deployer,
       args: args,
       log: true,
-      waitConfirmations: network.config.blockConfirmation || 1,
+      waitConfirmations: 6,
     })
 
     log('Verifying...')
