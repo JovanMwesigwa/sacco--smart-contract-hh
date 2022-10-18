@@ -83,7 +83,7 @@ module.exports = {
     // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
   },
   paths: {
-    artifacts: './client/artifacts',
+    artifacts: './client/backend',
   },
   mocha: {
     timeout: 500000, // 500 seconds max for running tests
