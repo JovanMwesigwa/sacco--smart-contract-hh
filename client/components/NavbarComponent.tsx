@@ -15,12 +15,13 @@ const NavbarComponent: React.FC<Props> = ({ isWeb3Enabled }) => {
           </h1>
         </div>
         <div className="flex flex-row">
-          {isWeb3Enabled && <ConnectButton moralisAuth={false} />}
-          {/* <CryptoLogos
+          {/* <ConnectButton moralisAuth={false} /> */}
+          {/* {isWeb3Enabled && <ConnectButton moralisAuth={false} />} */}
+          <CryptoLogos
             chain="polygon"
             // onClick={function noRefCheck(){}}
             size="40px"
-          /> */}
+          />
         </div>
       </div>
     </nav>
