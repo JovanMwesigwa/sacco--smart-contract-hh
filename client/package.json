@@ -19,6 +19,8 @@
     "react-countdown": "^2.3.2",
     "react-dom": "18.2.0",
     "react-moralis": "^1.4.2",
+    "react-push-notification": "^1.3.0",
+    "react-toast-notifications": "^2.5.1",
     "web3uikit": "^0.1.159"
   },
   "devDependencies": {

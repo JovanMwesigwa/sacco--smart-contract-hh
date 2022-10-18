@@ -1,8 +1,12 @@
+import { ethers } from 'ethers'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useNotification } from 'web3uikit'
 
 import { useEffect, useState } from 'react'
 import { useMoralis, useWeb3Contract } from 'react-moralis'
+import { useToasts } from 'react-toast-notifications'
+
 import { Button } from 'web3uikit'
 import {
   DescriptionComponent,
@@ -18,9 +22,18 @@ interface MoralesOptionProps {
   contractAddress: string
 }
 
+const WEBSOCKET_PROVIDER = process.env.WEBSOCKET_PROVIDER
+
 // 0.35764279
 
 const Home: NextPage = () => {
+  const webSocketProvider = new ethers.providers.WebSocketProvider(
+    // process.env.WEBSOCKET_PROVIDER
+    'wss://polygon-mumbai.g.alchemy.com/v2/i8s6BC9Pc-7SFlI-j47vU1pDk1J52HUn'
+  )
+
+  // console.log(WEBSOCKET_PROVIDER)
+
   const [contractBalance, setContractBalance] = useState('0')
   const [memberCount, setMemberCount] = useState('0')
   const [joinFee, setJoinFee] = useState('0')
@@ -30,15 +43,24 @@ const Home: NextPage = () => {
   const [interval, setInterval] = useState(null)
   const [memberList, setMemberList] = useState([])
   const [memberDetails, setMemberDetails] = useState({})
+  const [newEvent, setNewEvent] = useState({})
+  const [audio, setAudio] = useState<any>(null)
 
   const { isWeb3Enabled, chainId, Moralis, account } = useMoralis()
+  const { addToast } = useToasts()
+  const dispatch = useNotification()
+  // const audio = new Audio()
+
   // 0xC99df554F832e635a597Bfe84CEfaf1804aAD729
 
   useEffect(() => {
     if (isWeb3Enabled) {
       populateData()
+      setAudio(new Audio('/sound.mp3'))
     }
-  }, [isWeb3Enabled, account])
+  }, [isWeb3Enabled, account, newEvent, contractBalance, numberGettingPaid])
+
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, webSocketProvider)
 
   const populateData = async () => {
     try {
@@ -167,6 +189,54 @@ const Home: NextPage = () => {
     }
   }
 
+  contract.on('NewPlayerEntered', (args) => {
+    // console.log(args)
+    setNewEvent({
+      type: 'join',
+      data: args,
+    })
+
+    addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+
+    audio?.play()
+  })
+
+  contract.on('Deposit', (args) => {
+    // console.log(args)
+    setNewEvent({
+      type: 'deposit',
+      data: args,
+    })
+    addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+
+    audio?.play()
+  })
+
+  contract.on('MemberPaidOut', (args) => {
+    // console.log(args)
+    setNewEvent({
+      type: 'payout',
+      data: args,
+    })
+    addToast(`PAYOUT DONE! Payout to ${args} is done`, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+    audio?.play()
+  })
+
+  // const playAudio = () => {
+  //   audio.sound = 0.5
+
+  //   audio.play()
+  // }
+
   return (
     <div>
       <Head>
@@ -186,7 +256,8 @@ const Home: NextPage = () => {
 
       <main className="flex flex-col flex-1 mt-20">
         <NavbarComponent isWeb3Enabled={isWeb3Enabled} />
-        <div className=" bg-gray-900 p-10 h-screen">
+
+        <div className=" bg-gray-900 p-5 md:p-10 h-screen">
           <DescriptionComponent
             isWeb3Enabled={isWeb3Enabled}
             contractBalance={contractBalance}
@@ -203,7 +274,7 @@ const Home: NextPage = () => {
             deposit={deposit}
             memberDetails={memberDetails}
           />
-
+          {/* <button onClick={playAudio}>PLAY</button> */}
           <div className="w-full">
             <MemberTableComponent
               memberList={memberList}

@@ -108,9 +108,9 @@ contract Sacco is KeeperCompatibleInterface {
     }
 
     function payoutMembers() external {
-        if (msg.sender != i_KEEPERS_REGISTERY) {
-            revert Sacco__RequestNotPermitted();
-        }
+        // if (msg.sender != i_KEEPERS_REGISTERY) {
+        //     revert Sacco__RequestNotPermitted();
+        // }
 
         bool hasMembers = (s_membersCount > 0);
         bool hasBalance = (s_balances > 0);
