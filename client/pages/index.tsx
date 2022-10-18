@@ -1,13 +1,11 @@
 import { ethers } from 'ethers'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useNotification } from 'web3uikit'
 
 import { useEffect, useState } from 'react'
 import { useMoralis, useWeb3Contract } from 'react-moralis'
 import { useToasts } from 'react-toast-notifications'
 
-import { Button } from 'web3uikit'
 import {
   DescriptionComponent,
   MemberTableComponent,
@@ -15,23 +13,16 @@ import {
 } from '../components'
 import { ABI, CONTRACT_ADDRESS } from '../constants'
 
-interface MoralesOptionProps {
-  type: string
-  amount: string
-  Receiver: string
-  contractAddress: string
-}
-
-const WEBSOCKET_PROVIDER = process.env.WEBSOCKET_PROVIDER
+const WEBSOCKET_PROVIDER =
+  process.env.NEXT_WEBSOCKET_PROVIDER ||
+  'wss://polygon-mumbai.g.alchemy.com/v2/nwantinti'
 
 // 0.35764279
 
 const Home: NextPage = () => {
   const webSocketProvider = new ethers.providers.WebSocketProvider(
-    process.env.WEBSOCKET_PROVIDER
+    WEBSOCKET_PROVIDER
   )
-
-  // console.log(WEBSOCKET_PROVIDER)
 
   const [contractBalance, setContractBalance] = useState('0')
   const [memberCount, setMemberCount] = useState('0')
@@ -45,12 +36,8 @@ const Home: NextPage = () => {
   const [newEvent, setNewEvent] = useState({})
   const [audio, setAudio] = useState<any>(null)
 
-  const { isWeb3Enabled, chainId, Moralis, account } = useMoralis()
+  const { isWeb3Enabled, Moralis, account } = useMoralis()
   const { addToast } = useToasts()
-  const dispatch = useNotification()
-  // const audio = new Audio()
-
-  // 0xC99df554F832e635a597Bfe84CEfaf1804aAD729
 
   useEffect(() => {
     if (isWeb3Enabled) {
