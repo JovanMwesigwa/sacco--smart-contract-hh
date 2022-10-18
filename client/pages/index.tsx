@@ -28,8 +28,7 @@ const WEBSOCKET_PROVIDER = process.env.WEBSOCKET_PROVIDER
 
 const Home: NextPage = () => {
   const webSocketProvider = new ethers.providers.WebSocketProvider(
-    // process.env.WEBSOCKET_PROVIDER
-    'wss://polygon-mumbai.g.alchemy.com/v2/i8s6BC9Pc-7SFlI-j47vU1pDk1J52HUn'
+    process.env.WEBSOCKET_PROVIDER
   )
 
   // console.log(WEBSOCKET_PROVIDER)
