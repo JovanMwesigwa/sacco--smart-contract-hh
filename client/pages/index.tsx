@@ -47,16 +47,67 @@ const Home: NextPage = () => {
   const [interval, setInterval] = useState(null)
   const [memberList, setMemberList] = useState([])
   const [memberDetails, setMemberDetails] = useState({})
+  const [newEvent, setNewEvent] = useState({})
+  const [audio, setAudio] = useState<any>(null)
 
   const { isWeb3Enabled, Moralis, account } = useMoralis()
+  const { addToast } = useToasts()
 
   useEffect(() => {
+    setAudio(new Audio('/sound.mp3'))
+    eventListener()
+
     if (isWeb3Enabled) {
       populateData()
+      setNewEvent({})
     }
-  }, [isWeb3Enabled, account, contractBalance, numberGettingPaid])
+  }, [isWeb3Enabled, account, newEvent])
 
   const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, webSocketProvider)
+
+  const eventListener = async () => {
+    contract.on('NewPlayerEntered', (args) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'join',
+        data: args,
+      })
+
+      addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+
+      audio?.play()
+    })
+
+    contract.on('Deposit', (args) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'deposit',
+        data: args,
+      })
+      addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+
+      audio?.play()
+    })
+
+    contract.on('MemberPaidOut', (args) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'payout',
+        data: args,
+      })
+      addToast(`PAYOUT DONE! Payout to ${args} is done`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+      audio?.play()
+    })
+  }
 
   const populateData = async () => {
     try {
@@ -185,6 +236,17 @@ const Home: NextPage = () => {
     }
   }
 
+  const playAudio = () => {
+    addToast(`PAYOUT DONE! Payout to  is done`, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+
+    audio.sound = 0.5
+
+    audio.play()
+  }
+
   return (
     <div>
       <Head>
@@ -221,8 +283,8 @@ const Home: NextPage = () => {
             lastTimestamp={lastTimestamp}
             deposit={deposit}
             memberDetails={memberDetails}
-            contract={contract}
           />
+          <button onClick={playAudio}>PLAY</button>
           <div className="w-full">
             <MemberTableComponent
               memberList={memberList}
