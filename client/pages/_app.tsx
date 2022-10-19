@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import { MoralisProvider } from 'react-moralis'
-import { ToastProvider, useToasts } from 'react-toast-notifications'
+import dynamic from 'next/dynamic'
+import { ToastProvider } from 'react-toast-notifications'
 import { NotificationProvider } from 'web3uikit'
 
 import '../styles/globals.css'
@@ -17,4 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+// export default MyApp
+export default dynamic(() => Promise.resolve(MyApp), {
+  ssr: false,
+})
