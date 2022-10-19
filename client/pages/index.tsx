@@ -48,13 +48,14 @@ const Home: NextPage = () => {
   const [memberList, setMemberList] = useState([])
   const [memberDetails, setMemberDetails] = useState({})
   const [newEvent, setNewEvent] = useState({})
-  const [audio, setAudio] = useState<any>(null)
+  // const [audio, setAudio] = useState<any>(null)
+  // const audio = new Audio('/sound.mp3')
 
   const { isWeb3Enabled, Moralis, account } = useMoralis()
   const { addToast } = useToasts()
 
   useEffect(() => {
-    setAudio(new Audio('/sound.mp3'))
+    // setAudio(new Audio('/sound.mp3'))
     eventListener()
 
     if (isWeb3Enabled) {
@@ -67,6 +68,8 @@ const Home: NextPage = () => {
 
   const eventListener = async () => {
     contract.on('NewPlayerEntered', (args) => {
+      const audio = new Audio('/sound.mp3')
+      audio?.play()
       // console.log(args)
       setNewEvent({
         type: 'join',
@@ -77,11 +80,11 @@ const Home: NextPage = () => {
         appearance: 'success',
         autoDismiss: true,
       })
-
-      audio?.play()
     })
 
     contract.on('Deposit', (args) => {
+      const audio = new Audio('/sound.mp3')
+      audio?.play()
       // console.log(args)
       setNewEvent({
         type: 'deposit',
@@ -91,11 +94,11 @@ const Home: NextPage = () => {
         appearance: 'success',
         autoDismiss: true,
       })
-
-      audio?.play()
     })
 
     contract.on('MemberPaidOut', (args) => {
+      const audio = new Audio('/sound.mp3')
+      audio?.play()
       // console.log(args)
       setNewEvent({
         type: 'payout',
@@ -105,7 +108,6 @@ const Home: NextPage = () => {
         appearance: 'success',
         autoDismiss: true,
       })
-      audio?.play()
     })
   }
 
@@ -237,14 +239,15 @@ const Home: NextPage = () => {
   }
 
   const playAudio = () => {
+    const audio = new Audio('/sound.mp3')
+    audio.sound = 0.5
+    audio.play()
     addToast(`PAYOUT DONE! Payout to  is done`, {
       appearance: 'success',
       autoDismiss: true,
     })
 
-    audio.sound = 0.5
-
-    audio.play()
+    // audio.sound = 0.5
   }
 
   return (
