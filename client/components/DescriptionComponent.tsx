@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ConnectButton, Loading } from 'web3uikit'
+import { useToasts } from 'react-toast-notifications'
 
 import Countdown from 'react-countdown'
 import MaticIconComponent from './MaticIconComponent'
@@ -20,6 +21,7 @@ interface Props {
   populateData: any
   deposit: any
   memberDetails: any
+  contract: any
 }
 
 const DescriptionComponent: React.FC<Props> = ({
@@ -37,8 +39,74 @@ const DescriptionComponent: React.FC<Props> = ({
   lastTimestamp,
   deposit,
   memberDetails,
+  contract,
 }) => {
   // console.log(memberDetails.memberBalance.toString())
+  const [audio, setAudio] = useState<any>(null)
+  const [newEvent, setNewEvent] = useState({})
+
+  const { addToast } = useToasts()
+
+  useEffect(() => {
+    setAudio(new Audio('/sound.mp3'))
+    eventListener()
+  }, [newEvent])
+
+  const eventListener = async () => {
+    contract.on('NewPlayerEntered', (args: any) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'join',
+        data: args,
+      })
+
+      addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+
+      audio?.play()
+    })
+
+    contract.on('Deposit', (args: any) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'deposit',
+        data: args,
+      })
+      addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+
+      audio?.play()
+    })
+
+    contract.on('MemberPaidOut', (args: any) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'payout',
+        data: args,
+      })
+      addToast(`PAYOUT DONE! Payout to ${args} is done`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+      audio?.play()
+    })
+  }
+
+  const playAudio = () => {
+    addToast(`PAYOUT DONE! Payout to  is done`, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+
+    audio.sound = 0.5
+
+    audio.play()
+  }
+
   return (
     <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
       <div>
@@ -128,6 +196,7 @@ const DescriptionComponent: React.FC<Props> = ({
           </div>
         )}
       </div>
+      {/* <button onClick={playAudio}>PLAY</button> */}
     </div>
   )
 }
