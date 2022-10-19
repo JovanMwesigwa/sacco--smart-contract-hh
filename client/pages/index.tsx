@@ -13,9 +13,17 @@ import { useToasts } from 'react-toast-notifications'
 //   NavbarComponent,
 // } from '../components'
 
-const DescriptionComponent = dynamic(() => import('../components/DescriptionComponent'), { ssr: false });
-const MemberTableComponent = dynamic(() => import('../components/MemberTableComponent'), { ssr: false });
-const NavbarComponent = dynamic(() => import('../components/NavbarComponent'), { ssr: false });
+const DescriptionComponent = dynamic(
+  () => import('../components/DescriptionComponent'),
+  { ssr: false }
+)
+const MemberTableComponent = dynamic(
+  () => import('../components/MemberTableComponent'),
+  { ssr: false }
+)
+const NavbarComponent = dynamic(() => import('../components/NavbarComponent'), {
+  ssr: false,
+})
 
 import { ABI, CONTRACT_ADDRESS } from '../constants'
 
@@ -46,6 +54,7 @@ const Home: NextPage = () => {
   const { addToast } = useToasts()
 
   useEffect(() => {
+    eventListener()
     if (isWeb3Enabled) {
       populateData()
       setAudio(new Audio('/sound.mp3'))
@@ -181,47 +190,49 @@ const Home: NextPage = () => {
     }
   }
 
-  contract.on('NewPlayerEntered', (args) => {
-    // console.log(args)
-    setNewEvent({
-      type: 'join',
-      data: args,
+  const eventListener = async () => {
+    contract.on('NewPlayerEntered', (args) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'join',
+        data: args,
+      })
+
+      addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+
+      audio?.play()
     })
 
-    addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
-      appearance: 'success',
-      autoDismiss: true,
+    contract.on('Deposit', (args) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'deposit',
+        data: args,
+      })
+      addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+
+      audio?.play()
     })
 
-    audio?.play()
-  })
-
-  contract.on('Deposit', (args) => {
-    // console.log(args)
-    setNewEvent({
-      type: 'deposit',
-      data: args,
+    contract.on('MemberPaidOut', (args) => {
+      // console.log(args)
+      setNewEvent({
+        type: 'payout',
+        data: args,
+      })
+      addToast(`PAYOUT DONE! Payout to ${args} is done`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+      audio?.play()
     })
-    addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
-      appearance: 'success',
-      autoDismiss: true,
-    })
-
-    audio?.play()
-  })
-
-  contract.on('MemberPaidOut', (args) => {
-    // console.log(args)
-    setNewEvent({
-      type: 'payout',
-      data: args,
-    })
-    addToast(`PAYOUT DONE! Payout to ${args} is done`, {
-      appearance: 'success',
-      autoDismiss: true,
-    })
-    audio?.play()
-  })
+  }
 
   const playAudio = () => {
     addToast(`PAYOUT DONE! Payout to  is done`, {
