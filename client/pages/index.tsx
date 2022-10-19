@@ -5,7 +5,7 @@ import Head from 'next/head'
 
 import { useEffect, useState } from 'react'
 import { useMoralis, useWeb3Contract } from 'react-moralis'
-import { useToasts } from 'react-toast-notifications'
+// import { useToasts } from 'react-toast-notifications'
 import { useNotification } from 'web3uikit'
 
 // import {
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
   // const audio = new Audio('/sound.mp3')
 
   const { isWeb3Enabled, Moralis, account } = useMoralis()
-  const { addToast } = useToasts()
+  // const { addToast } = useToasts()
   const dispatch: any = useNotification()
 
   useEffect(() => {
@@ -70,9 +70,8 @@ const Home: NextPage = () => {
 
   const eventListener = async () => {
     contract.on('NewPlayerEntered', (args) => {
-      const audio = new Audio('/sound.mp3')
-      audio?.play()
-      // console.log(args)
+      playAudio('info', 'NEW USER JOIN!', `${args} has joined TeSACCO`)
+
       setNewEvent({
         type: 'join',
         data: args,
@@ -82,19 +81,18 @@ const Home: NextPage = () => {
       //   appearance: 'success',
       //   autoDismiss: true,
       // })
-      dispatch({
-        type: 'NEW USER JOIN!',
-        message: `${args} has joined TeSACCO`,
-        title: 'NEW USER JOIN!',
-        position: 'topR',
-        icon: 'bell',
-      })
+      // dispatch({
+      //   type: 'NEW USER JOIN!',
+      //   message: `${args} has joined TeSACCO`,
+      //   title: 'NEW USER JOIN!',
+      //   position: 'topR',
+      //   icon: 'bell',
+      // })
     })
 
     contract.on('Deposit', (args) => {
-      const audio = new Audio('/sound.mp3')
-      audio?.play()
-      // console.log(args)
+      playAudio('info', 'NEW DEPOSIT!', `${args} has made a deposit`)
+
       setNewEvent({
         type: 'deposit',
         data: args,
@@ -103,19 +101,18 @@ const Home: NextPage = () => {
       //   appearance: 'success',
       //   autoDismiss: true,
       // })
-      dispatch({
-        type: 'NEW DEPOSIT!',
-        message: `${args} has made a deposit`,
-        title: 'NEW DEPOSIT!',
-        position: 'topR',
-        icon: 'bell',
-      })
+      // dispatch({
+      //   type: 'NEW DEPOSIT!',
+      //   message: `${args} has made a deposit`,
+      //   title: 'NEW DEPOSIT!',
+      //   position: 'topR',
+      //   icon: 'bell',
+      // })
     })
 
     contract.on('MemberPaidOut', (args) => {
-      const audio = new Audio('/sound.mp3')
-      audio?.play()
-      // console.log(args)
+      playAudio('info', 'PAYOUT DONE!', `Payout to ${args} is done`)
+
       setNewEvent({
         type: 'payout',
         data: args,
@@ -124,13 +121,13 @@ const Home: NextPage = () => {
       //   appearance: 'success',
       //   autoDismiss: true,
       // })
-      dispatch({
-        type: 'PAYOUT DONE!',
-        message: `Payout to ${args} is done`,
-        title: 'PAYOUT DONE!',
-        position: 'topR',
-        icon: 'bell',
-      })
+      // dispatch({
+      //   type: 'PAYOUT DONE!',
+      //   message: `Payout to ${args} is done`,
+      //   title: 'PAYOUT DONE!',
+      //   position: 'topR',
+      //   icon: 'bell',
+      // })
     })
   }
 
@@ -261,14 +258,14 @@ const Home: NextPage = () => {
     }
   }
 
-  const playAudio = () => {
+  const playAudio = (type: string, title: string, message: string) => {
     const audio = new Audio('/sound.mp3')
     // audio.sound = 0.5
     audio.play()
     dispatch({
-      type: 'NEW DEPOSIT!',
-      message: ` has made a deposit`,
-      title: 'NEW DEPOSIT!',
+      type: type,
+      message: message,
+      title: title,
       position: 'topR',
       icon: 'bell',
     })
@@ -313,7 +310,13 @@ const Home: NextPage = () => {
             deposit={deposit}
             memberDetails={memberDetails}
           />
-          {/* <button onClick={playAudio}>PLAY</button> */}
+          {/* <button
+            onClick={() =>
+              playAudio('info', 'PAYOUT DONE!', `Payout to  is done`)
+            }
+          >
+            PLAY
+          </button> */}
           <div className="w-full">
             <MemberTableComponent
               memberList={memberList}
