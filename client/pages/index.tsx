@@ -6,6 +6,7 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { useMoralis, useWeb3Contract } from 'react-moralis'
 import { useToasts } from 'react-toast-notifications'
+import { useNotification } from 'web3uikit'
 
 // import {
 //   DescriptionComponent,
@@ -53,6 +54,7 @@ const Home: NextPage = () => {
 
   const { isWeb3Enabled, Moralis, account } = useMoralis()
   const { addToast } = useToasts()
+  const dispatch: any = useNotification()
 
   useEffect(() => {
     // setAudio(new Audio('/sound.mp3'))
@@ -76,9 +78,16 @@ const Home: NextPage = () => {
         data: args,
       })
 
-      addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
-        appearance: 'success',
-        autoDismiss: true,
+      // addToast(`NEW USER JOIN! ${args} has joined TeSACCO`, {
+      //   appearance: 'success',
+      //   autoDismiss: true,
+      // })
+      dispatch({
+        type: 'NEW USER JOIN!',
+        message: `${args} has joined TeSACCO`,
+        title: 'NEW USER JOIN!',
+        position: 'topR',
+        icon: 'bell',
       })
     })
 
@@ -90,9 +99,16 @@ const Home: NextPage = () => {
         type: 'deposit',
         data: args,
       })
-      addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
-        appearance: 'success',
-        autoDismiss: true,
+      // addToast(`NEW DEPOSIT! ${args} has made a deposit`, {
+      //   appearance: 'success',
+      //   autoDismiss: true,
+      // })
+      dispatch({
+        type: 'NEW DEPOSIT!',
+        message: `${args} has made a deposit`,
+        title: 'NEW DEPOSIT!',
+        position: 'topR',
+        icon: 'bell',
       })
     })
 
@@ -104,9 +120,16 @@ const Home: NextPage = () => {
         type: 'payout',
         data: args,
       })
-      addToast(`PAYOUT DONE! Payout to ${args} is done`, {
-        appearance: 'success',
-        autoDismiss: true,
+      // addToast(`PAYOUT DONE! Payout to ${args} is done`, {
+      //   appearance: 'success',
+      //   autoDismiss: true,
+      // })
+      dispatch({
+        type: 'PAYOUT DONE!',
+        message: `Payout to ${args} is done`,
+        title: 'PAYOUT DONE!',
+        position: 'topR',
+        icon: 'bell',
       })
     })
   }
@@ -242,9 +265,12 @@ const Home: NextPage = () => {
     const audio = new Audio('/sound.mp3')
     // audio.sound = 0.5
     audio.play()
-    addToast(`PAYOUT DONE! Payout to  is done`, {
-      appearance: 'success',
-      autoDismiss: true,
+    dispatch({
+      type: 'NEW DEPOSIT!',
+      message: ` has made a deposit`,
+      title: 'NEW DEPOSIT!',
+      position: 'topR',
+      icon: 'bell',
     })
 
     // audio.sound = 0.5
