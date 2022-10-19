@@ -1,16 +1,22 @@
 import { ethers } from 'ethers'
 import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 
 import { useEffect, useState } from 'react'
 import { useMoralis, useWeb3Contract } from 'react-moralis'
 import { useToasts } from 'react-toast-notifications'
 
-import {
-  DescriptionComponent,
-  MemberTableComponent,
-  NavbarComponent,
-} from '../components'
+// import {
+//   DescriptionComponent,
+//   MemberTableComponent,
+//   NavbarComponent,
+// } from '../components'
+
+const DescriptionComponent = dynamic(() => import('../components/DescriptionComponent'), { ssr: false });
+const MemberTableComponent = dynamic(() => import('../components/MemberTableComponent'), { ssr: false });
+const NavbarComponent = dynamic(() => import('../components/NavbarComponent'), { ssr: false });
+
 import { ABI, CONTRACT_ADDRESS } from '../constants'
 
 const WEBSOCKET_PROVIDER =
