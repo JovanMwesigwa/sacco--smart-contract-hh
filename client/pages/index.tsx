@@ -217,11 +217,16 @@ const Home: NextPage = () => {
     audio?.play()
   })
 
-  // const playAudio = () => {
-  //   audio.sound = 0.5
+  const playAudio = () => {
+    addToast(`PAYOUT DONE! Payout to  is done`, {
+      appearance: 'success',
+      autoDismiss: true,
+    })
 
-  //   audio.play()
-  // }
+    audio.sound = 0.5
+
+    audio.play()
+  }
 
   return (
     <div>
@@ -260,7 +265,7 @@ const Home: NextPage = () => {
             deposit={deposit}
             memberDetails={memberDetails}
           />
-          {/* <button onClick={playAudio}>PLAY</button> */}
+          <button onClick={playAudio}>PLAY</button>
           <div className="w-full">
             <MemberTableComponent
               memberList={memberList}
