@@ -47,7 +47,7 @@ const MemberInfoComponent: React.FC<Props> = ({ item, numberGettingPaid }) => {
     },
   })
 
-  if (isLoading || isFetching) return null
+  if (isLoading || isFetching || !memberInfo) return null
 
   return (
     <tr className="text-gray-300 border-b-2 border-gray-500">

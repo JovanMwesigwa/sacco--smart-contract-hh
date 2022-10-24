@@ -10,9 +10,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MoralisProvider initializeOnMount={false}>
       <NotificationProvider>
-        {/* <ToastProvider> */}
-        <Component {...pageProps} />
-        {/* </ToastProvider> */}
+        <ToastProvider>
+          <Component {...pageProps} />
+        </ToastProvider>
       </NotificationProvider>
     </MoralisProvider>
   )

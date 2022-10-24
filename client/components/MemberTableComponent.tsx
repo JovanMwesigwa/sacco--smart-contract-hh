@@ -3,11 +3,15 @@ import MemberInfoComponent from './MemberInfoComponent'
 interface Props {
   memberList: any
   numberGettingPaid: string | null
+  isLoading: any
+  isFetching: any
 }
 
 const MemberTableComponent: React.FC<Props> = ({
   memberList,
   numberGettingPaid,
+  isLoading,
+  isFetching,
 }) => {
   return (
     <table className="table-fluid w-full my-10 rounded-md">
@@ -23,13 +27,17 @@ const MemberTableComponent: React.FC<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {memberList.map((member: any) => (
-          <MemberInfoComponent
-            key={member.memberAddress}
-            item={member}
-            numberGettingPaid={numberGettingPaid}
-          />
-        ))}
+        {(!isLoading || !isFetching) && (
+          <>
+            {memberList?.map((member: any) => (
+              <MemberInfoComponent
+                key={member.memberAddress}
+                item={member}
+                numberGettingPaid={numberGettingPaid}
+              />
+            ))}
+          </>
+        )}
       </tbody>
     </table>
   )
