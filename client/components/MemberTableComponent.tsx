@@ -1,4 +1,5 @@
 import MemberInfoComponent from './MemberInfoComponent'
+import { Loading } from 'web3uikit'
 
 interface Props {
   memberList: any
@@ -13,6 +14,9 @@ const MemberTableComponent: React.FC<Props> = ({
   isLoading,
   isFetching,
 }) => {
+  if (isLoading || isFetching) {
+    return <Loading size={12} spinnerColor="#2E7DAF" spinnerType="loader" />
+  }
   return (
     <table className="table-fluid w-full my-10 rounded-md">
       <thead>

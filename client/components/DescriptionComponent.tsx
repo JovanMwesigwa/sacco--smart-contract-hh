@@ -40,6 +40,10 @@ const DescriptionComponent: React.FC<Props> = ({
 }) => {
   // console.log(memberDetails.memberBalance.toString())
 
+  if(isLoading || isFetching) {
+    return <Loading size={12} spinnerColor="#2E7DAF" spinnerType="wave" />
+  }
+
   return (
     <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
       <div>
